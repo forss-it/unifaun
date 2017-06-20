@@ -4,19 +4,19 @@ use Exception;
 class RequestHandler
 {
 
-    public static function Request($resource, $type = '', $data = null)
+    public static function Request($resource, $type = '', $data = null, $responseFile = false)
     {
         $res = null;
         if ($type && strtoupper($type) !== "GET") {
-            $res = Self::PostRequest($resource, $type, $data);
+            $res = Self::PostRequest($resource, $type, $data, $responseFile);
         } else {
-            $res = Self::GetRequest($resource, $data);
+            $res = Self::GetRequest($resource, $data, $responseFile);
         }
 
         return $res;
     }
 
-    private static function GetRequest($resource, $data)
+    private static function GetRequest($resource, $data, $responseFile)
     {
 
         $curl = curl_init(config('unifaun.url').$resource);
@@ -35,6 +35,10 @@ class RequestHandler
             throw new Exception("Could not curl to url (code: ".$info["http_code"]."): ".config('unifaun.url').$resource."\nMessage: ".$res, 500);
 
         }
+        if($responseFile)
+        {
+            return $res;
+        }
         $result = json_decode($res);
         if (json_last_error()) {
             throw new Exception("Could not parse json response: ".$res);
@@ -42,7 +46,7 @@ class RequestHandler
         return $result;
     }
 
-    private static function PostRequest($resource, $type, $data)
+    private static function PostRequest($resource, $type, $data, $responseFile)
     {
 
         if (strtolower($type) == 'file') {
@@ -71,6 +75,11 @@ class RequestHandler
 
             throw new Exception("Could not curl to url (code: ".$info["http_code"]."): ".config('unifaun.url').$resource."\nMessage: ".$res, 500);
         }
+        if($responseFile)
+        {
+            return $res;
+        }
+
         $result = json_decode($res);
         if (json_last_error()) {
             throw new Exception("Could not parse json response: ".$res, 500);

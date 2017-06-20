@@ -29,11 +29,16 @@ vendor/
 Via Composer
 
 ``` bash
-$ composer require /
+$ composer require git@gitlab.ntnet.se:Dialect/Unifaun.git
 ```
 
 ## Usage
-
+in config/app,php
+```php
+ $providers = [ ...
+ Dialect\Unifaun\UnifaunServiceProvider::class,
+ ..];
+```
 ###Create shipment
 ``` php
 $shipment = Unifaun::shipment()

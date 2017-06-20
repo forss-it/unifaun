@@ -39,7 +39,7 @@ class ShipmentsTest extends TestCase
             ->addParcel("Shipment2",1,1)
             ->service("P15")
             ->store();
-
+        $this->assertNotNull($shipment);
         $this->assertTrue($shipment->status === "READY");
 
     }
@@ -58,11 +58,30 @@ class ShipmentsTest extends TestCase
             ->addParcel("Shipment2",1,1)
             ->service("P15")
             ->create();
-
-        $this->assertTrue($shipment[0]->status === "PRINTED");
+        $this->assertNotNull($shipment);
+        $this->assertTrue($shipment->status === "PRINTED");
 
     }
 
+    /** @test */
+    public function can_get_pdf_for_shipment(){
+        $shipment = Unifaun::shipment()
+            ->pdfConfig("laser-a4", 0, 0)
+            ->sender("Markus Strömgren", "Torpvägen 12", 64134, "Katrineholm", "SE", "+46709459777", "markus.stromgren@dialect.se")
+            ->receiver("Andreas Strömgren", "Köpmangatan 5", 64130, "Katrineholm", "SE", "+46709459777", "andreas.stromgren@dialect.se")
+            ->addSenderPartners("PLAB", "0000000000")
+            ->senderReference("Thomas Söderlind")
+            ->receiverReference("Fredrik Bentzer")
+            ->orderNo("1337")
+            ->addParcel("Shipment1", 1, 1)
+            ->addParcel("Shipment2",1,1)
+            ->service("P15")
+            ->create();
+
+        $pdf = $shipment->getLabelPDF();
+        $this->assertNotNull($pdf);
+
+    }
 
 
 

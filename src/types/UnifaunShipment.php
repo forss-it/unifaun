@@ -6,6 +6,7 @@ use Dialect\Unifaun\RequestHandler;
 
 class UnifaunShipment
 {
+    private $id = null;
     private $pdfConfig;
     private $sender;
     private $receiver;
@@ -36,12 +37,12 @@ class UnifaunShipment
     public function pdfConfig($media, $x_offset = 0, $y_offset = 0)
     {
         $this->pdfConfig = [
-            "target1XOffset" => $x_offset,
-            "target1YOffset" => $y_offset,
-            "target1Media" => $media,
+            "target1XOffset" => 0,
+            "target1YOffset" => 0,
+            "target1Media" => "laser-a4",
             "target2XOffset" => 0,
             "target2YOffset" => 0,
-            "target2Media" => null,
+            "target2Media" => "laser-ste",
             "target3XOffset" => 0,
             "target3YOffset" => 0,
             "target3Media" => null,
@@ -195,20 +196,24 @@ class UnifaunShipment
     }
 
     /**
-     * Send API request to print shipment
-     * @return mixed|null
+     * Create shipment
+     * @return UnifaunShipmentObject
      */
     public function create(){
-        return RequestHandler::Request("/shipments", "POST", json_encode($this->toArray()));
+        $data = RequestHandler::Request("/shipments", "POST", json_encode($this->toArray()));
+        return new UnifaunShipmentObject($data[0]);
     }
 
     /**
-     * Send API request to store shipment
-     * @return mixed|null
+     * Store shipment
+     * @return UnifaunShipmentObject
      */
     public function store(){
-        return RequestHandler::Request("/stored-shipments", "POST", json_encode($this->toArray()["shipment"]));
+        $data = RequestHandler::Request("/stored-shipments", "POST", json_encode($this->toArray()["shipment"]));
+        return new UnifaunShipmentObject($data);
     }
+
+
 
 
     /**

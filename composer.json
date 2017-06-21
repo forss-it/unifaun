@@ -26,12 +26,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Dialect\\Unifaun\\": "src"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "Dialect\\Unifaun\\": "tests"
+            "Dialect\\Unifaun\\": "src/"
         }
     },
     "scripts": {

@@ -39,7 +39,7 @@ class UnifaunShipment
         $this->pdfConfig = [
             "target1XOffset" => 0,
             "target1YOffset" => 0,
-            "target1Media" => "laser-a4",
+            "target1Media" => "thermo-se",
             "target2XOffset" => 0,
             "target2YOffset" => 0,
             "target2Media" => "laser-ste",

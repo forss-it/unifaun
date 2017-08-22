@@ -34,12 +34,12 @@ class UnifaunShipment
      * @param int $y_offset
      * @return $this
      */
-    public function pdfConfig($media, $x_offset = 0, $y_offset = 0)
+    public function pdfConfig($media = "laser-a4", $x_offset = 0, $y_offset = 0)
     {
         $this->pdfConfig = [
-            "target1XOffset" => 0,
-            "target1YOffset" => 0,
-            "target1Media" => "laser-a4",
+            "target1XOffset" => $x_offset,
+            "target1YOffset" => $y_offset,
+            "target1Media" => $media,
             "target2XOffset" => 0,
             "target2YOffset" => 0,
             "target2Media" => "laser-ste",

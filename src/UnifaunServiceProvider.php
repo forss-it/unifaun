@@ -13,7 +13,8 @@ class UnifaunServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        $configPath = __DIR__.'/../config/unifaun.php';
+        $this->publishes([$configPath => config_path('unifaun.php')], 'config');
     }
 
     /**
@@ -23,6 +24,6 @@ class UnifaunServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->bind('unifaun', Unifaun::class);
     }
 }

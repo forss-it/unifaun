@@ -29,15 +29,66 @@ vendor/
 Via Composer
 
 ``` bash
-$ composer require /
+$ composer require git@gitlab.ntnet.se:Dialect/Unifaun.git
 ```
 
 ## Usage
-
-``` php
-$skeleton = new Dialect\Unifaun();
-echo $skeleton->echoPhrase('Hello, League!');
+in config/app,php
+```php
+ $providers = [ ...
+ Dialect\Unifaun\UnifaunServiceProvider::class,
+ ..];
 ```
+###Create shipment
+``` php
+$shipment = Unifaun::shipment()
+            ->pdfConfig("laser-a4", 0, 0)
+            ->sender("Markus Strömgren", "Torpvägen 12", 64134, "Katrineholm", "SE", "+46709459777", "markus.stromgren@dialect.se")
+            ->receiver("Andreas Strömgren", "Köpmangatan 5", 64130, "Katrineholm", "SE", "+46709459777", "andreas.stromgren@dialect.se")
+            ->addSenderPartners("PLAB", "0000000000")
+            ->senderReference("Thomas Söderlind")
+            ->receiverReference("Fredrik Bentzer")
+            ->orderNo("1337")
+            ->addParcel("Shipment1", 1, 1)
+            ->addParcel("Shipment2",1,1)
+            ->service("P15")
+            ->create();
+```
+
+###Store shipment
+``` php
+$shipment = Unifaun::shipment()
+            ->sender("Markus Strömgren", "Torpvägen 12", 64134, "Katrineholm", "SE", "+46709459777", "markus.stromgren@dialect.se")
+            ->receiver("Andreas Strömgren", "Köpmangatan 5", 64130, "Katrineholm", "SE", "+46709459777", "andreas.stromgren@dialect.se")
+            ->addSenderPartners("PLAB", "0000000000")
+            ->senderReference("Thomas Söderlind")
+            ->receiverReference("Fredrik Bentzer")
+            ->orderNo("1337")
+            ->addParcel("Shipment1", 1, 1)
+            ->addParcel("Shipment2",1,1)
+            ->service("P15")
+            ->store();
+```
+
+###PDF example
+``` php
+$shipment = Unifaun::shipment()
+            ->sender("Markus Strömgren", "Torpvägen 12", 64134, "Katrineholm", "SE", "+46709459777", "markus.stromgren@dialect.se")
+            ->receiver("Andreas Strömgren", "Köpmangatan 5", 64130, "Katrineholm", "SE", "+46709459777", "andreas.stromgren@dialect.se")
+            ->addSenderPartners("PLAB", "0000000000")
+            ->senderReference("Thomas Söderlind")
+            ->receiverReference("Fredrik Bentzer")
+            ->orderNo("1337")
+            ->addParcel("Shipment1", 1, 1)
+            ->addParcel("Shipment2",1,1)
+            ->service("P15")
+            ->create();
+ $pdf = $shipment->getLabelPDF();
+ 
+ return $pdf->download();
+```
+
+
 
 ## Change log
 
